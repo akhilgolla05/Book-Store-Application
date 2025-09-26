@@ -14,7 +14,7 @@ public abstract class AbstractIT {
     int port;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         RestAssured.port = port;
     }
 }
