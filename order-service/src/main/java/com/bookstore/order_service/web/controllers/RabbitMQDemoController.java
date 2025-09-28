@@ -5,6 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.*;
 
+/*
+{
+    "routingKey":"delivered-orders",
+    "payload":{
+        "content":"Order Delivered with id:1234"
+    }
+}
+ */
 @RestController
 @RequestMapping("/api/test")
 @RequiredArgsConstructor
