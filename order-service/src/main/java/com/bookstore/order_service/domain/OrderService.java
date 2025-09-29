@@ -14,9 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+
     private final OrderRepository orderRepository;
+    private final OrderValidator orderValidator;
 
     public CreateOrderResponse createOrder(String username, CreateOrderRequest request) {
+        orderValidator.validate(request);
         OrderEntity newOrder = OrderMapper.toOrderEntity(request);
         newOrder.setUserName(username);
         OrderEntity savedOrder = orderRepository.save(newOrder);
