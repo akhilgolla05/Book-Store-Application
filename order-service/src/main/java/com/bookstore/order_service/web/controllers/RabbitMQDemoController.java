@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
     }
 }
  */
-@RestController
-@RequestMapping("/api/test")
+//@RestController
+//@RequestMapping("/api/test")
 @RequiredArgsConstructor
 public class RabbitMQDemoController {
 
