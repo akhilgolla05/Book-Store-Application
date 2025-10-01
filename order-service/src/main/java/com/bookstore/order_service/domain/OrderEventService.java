@@ -1,7 +1,6 @@
 package com.bookstore.order_service.domain;
 
-import com.bookstore.order_service.domain.models.OrderCreatedEvent;
-import com.bookstore.order_service.domain.models.OrderEventType;
+import com.bookstore.order_service.domain.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,6 +34,36 @@ public class OrderEventService {
         this.orderEventRepository.save(orderEventEntity);
     }
 
+    void save(OrderDeliveredEvent event){
+        OrderEventEntity orderEventEntity = new OrderEventEntity();
+        orderEventEntity.setEventId(event.eventId());
+        orderEventEntity.setEventType(OrderEventType.ORDER_DELIVERED);
+        orderEventEntity.setOrderNumber(event.orderNumber());
+        orderEventEntity.setCreatedAt(event.createdAt());
+        orderEventEntity.setPayload(toJsonPayload(event));
+        this.orderEventRepository.save(orderEventEntity);
+    }
+
+    void save(OrderCancelledEvent event){
+        OrderEventEntity orderEventEntity = new OrderEventEntity();
+        orderEventEntity.setEventId(event.eventId());
+        orderEventEntity.setEventType(OrderEventType.ORDER_CANCELLED);
+        orderEventEntity.setOrderNumber(event.orderNumber());
+        orderEventEntity.setCreatedAt(event.createdAt());
+        orderEventEntity.setPayload(toJsonPayload(event));
+        this.orderEventRepository.save(orderEventEntity);
+    }
+
+    void save(OrderErrorEvent event){
+        OrderEventEntity orderEventEntity = new OrderEventEntity();
+        orderEventEntity.setEventId(event.eventId());
+        orderEventEntity.setEventType(OrderEventType.ORDER_PROCESSING_FAILED);
+        orderEventEntity.setOrderNumber(event.orderNumber());
+        orderEventEntity.setCreatedAt(event.createdAt());
+        orderEventEntity.setPayload(toJsonPayload(event));
+        this.orderEventRepository.save(orderEventEntity);
+    }
+
     public void publishOrderEvents(){
         Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
         List<OrderEventEntity> events = orderEventRepository.findAll(); // for large scale applications : Read through Pagination
@@ -53,10 +82,23 @@ public class OrderEventService {
                 OrderCreatedEvent orderCreatedEvent = fromJsonPayload(event.getPayload(), OrderCreatedEvent.class);
                 orderEventPublisher.publish(orderCreatedEvent);
                 break;
+            case ORDER_DELIVERED:
+                OrderDeliveredEvent deliveredEvent = fromJsonPayload(event.getPayload(), OrderDeliveredEvent.class);
+                orderEventPublisher.publish(deliveredEvent);
+                break;
+            case ORDER_CANCELLED:
+                OrderCancelledEvent cancelledEvent = fromJsonPayload(event.getPayload(), OrderCancelledEvent.class);
+                orderEventPublisher.publish(cancelledEvent);
+                break;
+            case ORDER_PROCESSING_FAILED:
+                OrderErrorEvent errorEvent = fromJsonPayload(event.getPayload(), OrderErrorEvent.class);
+                orderEventPublisher.publish(errorEvent);
+                break;
             default:
                 logger.warn("Unsupported Event Type {}", eventType);
         }
     }
+
 
     private String toJsonPayload(Object object){
         try{
