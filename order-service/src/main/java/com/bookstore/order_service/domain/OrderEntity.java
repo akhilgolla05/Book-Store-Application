@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -29,7 +28,7 @@ class OrderEntity {
     @Column(name = "username", nullable = false)
     private String userName;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "order") //default lazy loading
     private Set<OrderItemEntity> items;
 
     @Embedded

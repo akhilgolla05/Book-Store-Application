@@ -1,12 +1,15 @@
 package com.bookstore.order_service.domain;
 
 import com.bookstore.order_service.domain.models.CreateOrderRequest;
+import com.bookstore.order_service.domain.models.OrderDto;
 import com.bookstore.order_service.domain.models.OrderItem;
 import com.bookstore.order_service.domain.models.OrderStatus;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 //library : mapstruct
 class OrderMapper {
@@ -31,5 +34,23 @@ class OrderMapper {
         newOrder.setItems(orderItems);
         return newOrder;
 
+    }
+
+    static OrderDto convertToDTO(OrderEntity orderEntity){
+        List<OrderItem> orderItems = orderEntity.getItems()
+                .stream()
+                .map(item->new OrderItem(item.getCode(), item.getName(), item.getPrice()
+                , item.getQuantity()))
+                .toList();
+
+        return new OrderDto(
+                orderEntity.getOrderNumber(),
+                orderEntity.getUserName(),
+                orderItems,
+                orderEntity.getCustomer(),
+                orderEntity.getDeliveryAddress(),
+                orderEntity.getStatus(),
+                orderEntity.getComments(),
+                orderEntity.getCreatedAt());
     }
 }

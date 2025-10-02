@@ -1,16 +1,27 @@
 package com.bookstore.order_service.web.controllers;
 
 import com.bookstore.order_service.AbstractIT;
+import com.bookstore.order_service.domain.models.OrderDto;
+import com.bookstore.order_service.domain.models.OrderSummary;
 import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.http.ContentType;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import static io.restassured.RestAssured.given;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
+
 
 //Integration Test
+@Sql(scripts = "/test-orders.sql")//for every test method this SQL script gonna run
 class OrderControllerTest extends AbstractIT {
 
     @Nested
@@ -52,7 +63,7 @@ class OrderControllerTest extends AbstractIT {
                     }
                     """;
 
-            RestAssured.given().contentType(ContentType.JSON)
+            given().contentType(ContentType.JSON)
                     .body(payload)
                     .when().post("/api/orders")
                     .then()
@@ -99,7 +110,7 @@ class OrderControllerTest extends AbstractIT {
                         ]
                     }
                     """;
-            RestAssured.given().contentType(ContentType.JSON)
+            given().contentType(ContentType.JSON)
                     .body(payload)
                     .when().post("/api/orders")
                     .then()
@@ -108,5 +119,41 @@ class OrderControllerTest extends AbstractIT {
 
         }
     }
+
+//    @Nested
+//    class GetOrdersTest{
+//        @Test
+//        void shouldGetOrdersSuccessfully(){
+//            List<OrderSummary> orderSummaryList = RestAssured.given()
+//                    .when().get("/api/orders")
+//                    .then()
+//                    .statusCode(200)
+//                    .extract().body()
+//                    .as(new TypeRef<>() {});
+//
+//            System.out.println(orderSummaryList);
+//            assertThat(orderSummaryList).hasSize(2);
+//        }
+//    }
+
+
+//    @Nested
+//    class getOrderByOrderNumberTest{
+//
+//        String orderNumber = "order-123";
+//        @Test
+//        void getOrderByOrderNumberSuccessfully(){
+//
+//            OrderDto orderDto = given()
+//                    .when().get("/api/orders/{orderNumber}", orderNumber)
+//                    .then().statusCode(HttpStatus.OK.value())
+//                    .body("orderNumber", is(orderNumber))
+//                    .body("items.size()", is(2))
+//                    .extract().body().as(OrderDto.class);
+//
+//            assertThat(orderDto).isNotNull();
+//
+//        }
+//    }
 
 }
