@@ -1,11 +1,12 @@
 package com.bookstore.order_service;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+
 import com.github.tomakehurst.wiremock.client.WireMock;
 import io.restassured.RestAssured;
-import org.apache.http.HttpStatus;
+import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.extension.MediaType;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
@@ -13,18 +14,14 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.wiremock.integrations.testcontainers.WireMockContainer;
 
-import java.math.BigDecimal;
-
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-
-
 @Import(TestcontainersConfiguration.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // for integration Test : loading entire components
+@SpringBootTest(
+        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // for integration Test : loading entire components
 public abstract class AbstractIT {
 
     @LocalServerPort
     int port;
-    //creating a static wiremock container instance
+    // creating a static wiremock container instance
     static WireMockContainer mockContainer = new WireMockContainer("wiremock/wiremock:3.6.0-alpine");
 
     @BeforeAll
@@ -33,10 +30,10 @@ public abstract class AbstractIT {
         configureFor(mockContainer.getHost(), mockContainer.getPort());
     }
 
-    //instead of talking to the catalog-service when calling the URL, it talks to the wiremock server base URL
+    // instead of talking to the catalog-service when calling the URL, it talks to the wiremock server base URL
     @DynamicPropertySource
     public static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("orders.catalog-service-url",mockContainer::getBaseUrl);
+        registry.add("orders.catalog-service-url", mockContainer::getBaseUrl);
     }
 
     @BeforeEach

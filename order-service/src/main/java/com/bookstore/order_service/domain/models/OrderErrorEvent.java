@@ -10,6 +10,4 @@ public record OrderErrorEvent(
         Customer customer,
         DeliveryAddress deliveryAddress,
         String reason,
-        LocalDateTime createdAt
-) {
-}
+        LocalDateTime createdAt) {}

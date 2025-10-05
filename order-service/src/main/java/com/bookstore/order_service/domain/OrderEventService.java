@@ -2,16 +2,14 @@ package com.bookstore.order_service.domain;
 
 import com.bookstore.order_service.domain.models.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Transactional
@@ -24,7 +22,7 @@ public class OrderEventService {
     private final OrderEventPublisher orderEventPublisher;
     private final ObjectMapper objectMapper;
 
-    void save(OrderCreatedEvent event){
+    void save(OrderCreatedEvent event) {
         OrderEventEntity orderEventEntity = new OrderEventEntity();
         orderEventEntity.setEventId(event.eventId());
         orderEventEntity.setEventType(OrderEventType.ORDER_CREATED);
@@ -34,7 +32,7 @@ public class OrderEventService {
         this.orderEventRepository.save(orderEventEntity);
     }
 
-    void save(OrderDeliveredEvent event){
+    void save(OrderDeliveredEvent event) {
         OrderEventEntity orderEventEntity = new OrderEventEntity();
         orderEventEntity.setEventId(event.eventId());
         orderEventEntity.setEventType(OrderEventType.ORDER_DELIVERED);
@@ -44,7 +42,7 @@ public class OrderEventService {
         this.orderEventRepository.save(orderEventEntity);
     }
 
-    void save(OrderCancelledEvent event){
+    void save(OrderCancelledEvent event) {
         OrderEventEntity orderEventEntity = new OrderEventEntity();
         orderEventEntity.setEventId(event.eventId());
         orderEventEntity.setEventType(OrderEventType.ORDER_CANCELLED);
@@ -54,7 +52,7 @@ public class OrderEventService {
         this.orderEventRepository.save(orderEventEntity);
     }
 
-    void save(OrderErrorEvent event){
+    void save(OrderErrorEvent event) {
         OrderEventEntity orderEventEntity = new OrderEventEntity();
         orderEventEntity.setEventId(event.eventId());
         orderEventEntity.setEventType(OrderEventType.ORDER_PROCESSING_FAILED);
@@ -64,20 +62,20 @@ public class OrderEventService {
         this.orderEventRepository.save(orderEventEntity);
     }
 
-    public void publishOrderEvents(){
+    public void publishOrderEvents() {
         Sort sort = Sort.by(Sort.Direction.ASC, "createdAt");
-        List<OrderEventEntity> events = orderEventRepository.findAll(); // for large scale applications : Read through Pagination
+        List<OrderEventEntity> events =
+                orderEventRepository.findAll(); // for large scale applications : Read through Pagination
         logger.info("Found {} order events to be published ", events.size());
-        for(OrderEventEntity event : events){
+        for (OrderEventEntity event : events) {
             this.publishEvent(event);
             orderEventRepository.delete(event);
         }
-
     }
 
-    private void publishEvent(OrderEventEntity event){
+    private void publishEvent(OrderEventEntity event) {
         OrderEventType eventType = event.getEventType();
-        switch (eventType){
+        switch (eventType) {
             case ORDER_CREATED:
                 OrderCreatedEvent orderCreatedEvent = fromJsonPayload(event.getPayload(), OrderCreatedEvent.class);
                 orderEventPublisher.publish(orderCreatedEvent);
@@ -99,23 +97,19 @@ public class OrderEventService {
         }
     }
 
-
-    private String toJsonPayload(Object object){
-        try{
+    private String toJsonPayload(Object object) {
+        try {
             return objectMapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
 
-    private <T> T fromJsonPayload(String json, Class<T> type){
-        try{
+    private <T> T fromJsonPayload(String json, Class<T> type) {
+        try {
             return objectMapper.readValue(json, type);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
     }
-
-
-
 }

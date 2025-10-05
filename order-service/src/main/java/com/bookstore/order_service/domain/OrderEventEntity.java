@@ -2,12 +2,11 @@ package com.bookstore.order_service.domain;
 
 import com.bookstore.order_service.domain.models.OrderEventType;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "order_events")
@@ -35,7 +34,7 @@ public class OrderEventEntity {
     private String payload;
 
     @Column(nullable = false, name = "created_at", updatable = false)
-    private LocalDateTime createdAt =  LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

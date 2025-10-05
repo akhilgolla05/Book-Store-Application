@@ -19,20 +19,23 @@ public class OrderEventPublisher {
     private final RabbitTemplate rabbitTemplate;
     private final ApplicationProperties properties;
 
-    public void publish(OrderCreatedEvent event){
+    public void publish(OrderCreatedEvent event) {
         this.send(properties.newOrdersQueue(), event);
     }
-    public void publish(OrderDeliveredEvent event){
+
+    public void publish(OrderDeliveredEvent event) {
         this.send(properties.deliveredOrdersQueue(), event);
     }
-    public void publish(OrderCancelledEvent event){
+
+    public void publish(OrderCancelledEvent event) {
         this.send(properties.cancelledOrdersQueue(), event);
     }
-    public void publish(OrderErrorEvent event){
+
+    public void publish(OrderErrorEvent event) {
         this.send(properties.errorOrdersQueue(), event);
     }
 
-    //we may use diff events : object is recommended(generic)
+    // we may use diff events : object is recommended(generic)
     private void send(String routingKey, Object event) {
         rabbitTemplate.convertAndSend(properties.orderEventsExchange(), routingKey, event);
         logger.info("Published order event {}", event);

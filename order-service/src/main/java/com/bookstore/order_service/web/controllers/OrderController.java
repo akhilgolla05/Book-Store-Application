@@ -8,13 +8,12 @@ import com.bookstore.order_service.domain.models.CreateOrderResponse;
 import com.bookstore.order_service.domain.models.OrderDto;
 import com.bookstore.order_service.domain.models.OrderSummary;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -26,10 +25,11 @@ public class OrderController {
     private final OrderService orderService;
     private final SecurityService securityService;
 
-    //for Test case for controller : need to write for controller, because we are checking the missing fields, not req integration
+    // for Test case for controller : need to write for controller, because we are checking the missing fields, not req
+    // integration
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    CreateOrderResponse createOrder(@Valid @RequestBody CreateOrderRequest request){
+    CreateOrderResponse createOrder(@Valid @RequestBody CreateOrderRequest request) {
         String username = securityService.getLoggedInUserName();
         logger.info("Creating order for user: {}", username);
         return orderService.createOrder(username, request);
@@ -37,7 +37,7 @@ public class OrderController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    List<OrderSummary> getAllOrders(){
+    List<OrderSummary> getAllOrders() {
         String username = securityService.getLoggedInUserName();
         logger.info("Fetching all orders for user: {}", username);
         return orderService.getOrders(username);
@@ -45,14 +45,15 @@ public class OrderController {
 
     @GetMapping("/{orderNumber}")
     @ResponseStatus(HttpStatus.FOUND)
-    OrderDto getOrder(@PathVariable String orderNumber){
+    OrderDto getOrder(@PathVariable String orderNumber) {
         logger.info("Fetching order By id: {}", orderNumber);
         String username = securityService.getLoggedInUserName();
-        return orderService.findUserOrder(orderNumber, username)
-                .orElseThrow(()-> new OrderNotFoundException("Order with OrderNumber : "+  orderNumber +" not Found!"));
+        return orderService
+                .findUserOrder(orderNumber, username)
+                .orElseThrow(
+                        () -> new OrderNotFoundException("Order with OrderNumber : " + orderNumber + " not Found!"));
     }
 }
-
 
 /*
 

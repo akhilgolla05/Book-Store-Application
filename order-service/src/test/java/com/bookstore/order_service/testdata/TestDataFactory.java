@@ -2,14 +2,13 @@ package com.bookstore.order_service.testdata;
 
 import static org.instancio.Select.field;
 
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Set;
-
 import com.bookstore.order_service.domain.models.CreateOrderRequest;
 import com.bookstore.order_service.domain.models.Customer;
 import com.bookstore.order_service.domain.models.DeliveryAddress;
 import com.bookstore.order_service.domain.models.OrderItem;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 import org.instancio.Instancio;
 
 public class TestDataFactory {

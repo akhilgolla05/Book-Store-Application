@@ -2,6 +2,10 @@ package com.bookstore.order_service.web.exception;
 
 import com.bookstore.order_service.domain.InvalidOrderException;
 import com.bookstore.order_service.domain.OrderNotFoundException;
+import java.net.URI;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import org.springframework.http.*;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -10,18 +14,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.net.URI;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-
 @RestControllerAdvice
 public class GlobalExceptionalHandler extends ResponseEntityExceptionHandler {
 
     private static final URI NOT_FOUND_TYPE = URI.create("https://api.bookstore.com/errors/not-found");
     private static final URI ISE_FOUND_TYPE = URI.create("https://api.bookstore.com/errors/server-error");
     private static final String SERVICE_NAME = "order-service";
-    private static final URI BAD_REQUEST_TYPE = URI.create("https://api.bookstore.com/errors/bad-request");;
+    private static final URI BAD_REQUEST_TYPE = URI.create("https://api.bookstore.com/errors/bad-request");
+    ;
 
     @ExceptionHandler(Exception.class)
     ProblemDetail handleUnhandledException(Exception ex) {
@@ -58,8 +58,7 @@ public class GlobalExceptionalHandler extends ResponseEntityExceptionHandler {
     }
 
     @Override
-    @Nullable
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+    @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         List<String> errors = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {

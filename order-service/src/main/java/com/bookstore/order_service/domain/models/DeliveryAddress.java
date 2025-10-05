@@ -8,5 +8,4 @@ public record DeliveryAddress(
         @NotBlank(message = "city is Required") String city,
         @NotBlank(message = "state is Required") String state,
         @NotBlank(message = "zipCode is Required") String zipCode,
-        @NotBlank(message = "county is Required") String country) {
-}
+        @NotBlank(message = "county is Required") String country) {}

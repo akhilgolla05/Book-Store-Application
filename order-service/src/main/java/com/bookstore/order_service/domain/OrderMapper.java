@@ -4,14 +4,12 @@ import com.bookstore.order_service.domain.models.CreateOrderRequest;
 import com.bookstore.order_service.domain.models.OrderDto;
 import com.bookstore.order_service.domain.models.OrderItem;
 import com.bookstore.order_service.domain.models.OrderStatus;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-//library : mapstruct
+// library : mapstruct
 class OrderMapper {
 
     static OrderEntity toOrderEntity(CreateOrderRequest request) {
@@ -22,7 +20,7 @@ class OrderMapper {
         newOrder.setCustomer(request.customer());
         newOrder.setDeliveryAddress(request.deliveryAddress());
         Set<OrderItemEntity> orderItems = new HashSet<>();
-        for(OrderItem item : request.items()) {
+        for (OrderItem item : request.items()) {
             OrderItemEntity orderItem = new OrderItemEntity();
             orderItem.setName(item.name());
             orderItem.setQuantity(item.quantity());
@@ -33,14 +31,11 @@ class OrderMapper {
         }
         newOrder.setItems(orderItems);
         return newOrder;
-
     }
 
-    static OrderDto convertToDTO(OrderEntity orderEntity){
-        List<OrderItem> orderItems = orderEntity.getItems()
-                .stream()
-                .map(item->new OrderItem(item.getCode(), item.getName(), item.getPrice()
-                , item.getQuantity()))
+    static OrderDto convertToDTO(OrderEntity orderEntity) {
+        List<OrderItem> orderItems = orderEntity.getItems().stream()
+                .map(item -> new OrderItem(item.getCode(), item.getName(), item.getPrice(), item.getQuantity()))
                 .toList();
 
         return new OrderDto(

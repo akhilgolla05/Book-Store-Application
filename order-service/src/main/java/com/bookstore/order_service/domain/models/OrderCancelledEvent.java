@@ -10,5 +10,4 @@ public record OrderCancelledEvent(
         Customer customer,
         DeliveryAddress deliveryAddress,
         String reason,
-        LocalDateTime createdAt) {
-}
+        LocalDateTime createdAt) {}

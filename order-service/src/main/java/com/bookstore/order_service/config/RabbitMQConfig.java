@@ -22,37 +22,34 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    Queue newOrdersQueue(){
+    Queue newOrdersQueue() {
         return QueueBuilder.durable(properties.newOrdersQueue()).build();
     }
 
-    //Binding Queue with the exchange
+    // Binding Queue with the exchange
     @Bean
     Binding newOrdersQueueBinding() {
-        return BindingBuilder.bind(newOrdersQueue())
-                .to(exchange()).with(properties.newOrdersQueue());
+        return BindingBuilder.bind(newOrdersQueue()).to(exchange()).with(properties.newOrdersQueue());
     }
 
     @Bean
-    Queue deliveredOrdersQueue(){
+    Queue deliveredOrdersQueue() {
         return QueueBuilder.durable(properties.deliveredOrdersQueue()).build();
     }
 
     @Bean
     Binding deliveredOrdersQueueBinding() {
-        return BindingBuilder.bind(deliveredOrdersQueue())
-                .to(exchange()).with(properties.deliveredOrdersQueue());
+        return BindingBuilder.bind(deliveredOrdersQueue()).to(exchange()).with(properties.deliveredOrdersQueue());
     }
 
     @Bean
-    Queue cancelledOrdersQueue(){
+    Queue cancelledOrdersQueue() {
         return QueueBuilder.durable(properties.cancelledOrdersQueue()).build();
     }
 
     @Bean
     Binding cancelledOrdersQueueBinding() {
-        return BindingBuilder.bind(cancelledOrdersQueue())
-                .to(exchange()).with(properties.cancelledOrdersQueue());
+        return BindingBuilder.bind(cancelledOrdersQueue()).to(exchange()).with(properties.cancelledOrdersQueue());
     }
 
     @Bean
@@ -62,11 +59,10 @@ public class RabbitMQConfig {
 
     @Bean
     Binding errorOrdersQueueBinding() {
-        return BindingBuilder.bind(errorOrdersQueue())
-                .to(exchange()).with(properties.errorOrdersQueue());
+        return BindingBuilder.bind(errorOrdersQueue()).to(exchange()).with(properties.errorOrdersQueue());
     }
 
-    //Rabbit MQ template for sending the message
+    // Rabbit MQ template for sending the message
     @Bean
     public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory, ObjectMapper objectMapper) {
         final var rabbitTemplate = new RabbitTemplate(connectionFactory);
@@ -78,5 +74,4 @@ public class RabbitMQConfig {
     public Jackson2JsonMessageConverter jacksonConverter(ObjectMapper objectMapper) {
         return new Jackson2JsonMessageConverter(objectMapper);
     }
-
 }

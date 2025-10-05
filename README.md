@@ -25,3 +25,5 @@ $env:Path="$env:JAVA_HOME\bin;$env:Path"
 > Dockerizing:
 > https://docs.spring.io/spring-boot/maven-plugin/build-image.html#page-title
 > ./mvnw -pl catalog-service spring-boot:build-image -DskipTests
+
+>task restart

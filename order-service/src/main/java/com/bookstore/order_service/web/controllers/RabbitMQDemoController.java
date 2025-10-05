@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
     }
 }
  */
-//@RestController
-//@RequestMapping("/api/test")
+// @RestController
+// @RequestMapping("/api/test")
 @RequiredArgsConstructor
 public class RabbitMQDemoController {
 
@@ -22,14 +22,11 @@ public class RabbitMQDemoController {
     private final ApplicationProperties properties;
 
     @PostMapping("/send")
-    public void sendTestMessage(@RequestBody MyMessage message){
-        rabbitTemplate.convertAndSend(
-                properties.orderEventsExchange(),
-                message.routingKey(),
-                message.payload()
-        );
+    public void sendTestMessage(@RequestBody MyMessage message) {
+        rabbitTemplate.convertAndSend(properties.orderEventsExchange(), message.routingKey(), message.payload());
     }
 }
 
-record MyMessage(String routingKey, MyPayload payload){}
-record MyPayload(String content){}
+record MyMessage(String routingKey, MyPayload payload) {}
+
+record MyPayload(String content) {}
