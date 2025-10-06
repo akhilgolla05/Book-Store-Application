@@ -23,6 +23,8 @@ services:
           memory: 700m
 #    labels:
 #      logging: "promtail"
+    networks:
+      - bookstore-net
 
 
 
@@ -57,6 +59,8 @@ services:
           memory: 700m
 #    labels:
 #      logging: "promtail"
+    networks:
+      - bookstore-net
 
   notification-service:
     image: akhilgolla/bookstore-notification-service
@@ -91,6 +95,8 @@ services:
           memory: 700m
 #    labels:
 #      logging: "promtail"
+    networks:
+      - bookstore-net
 
   api-gateway:
     image: akhilgolla/bookstore-api-gateway
@@ -110,3 +116,5 @@ services:
           memory: 700m
 #    labels:
 #      logging: "promtail"
+    networks:
+      - bookstore-net

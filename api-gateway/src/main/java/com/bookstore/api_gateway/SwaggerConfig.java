@@ -10,7 +10,11 @@ import org.springdoc.core.properties.AbstractSwaggerUiConfigProperties;
 import org.springdoc.core.properties.SwaggerUiConfigProperties;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.cloud.gateway.route.RouteDefinitionLocator;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 // Dynamic config of swagger-API
 @Configuration
@@ -39,5 +43,19 @@ public class SwaggerConfig {
                     urls.add(swaggerUrl);
                 });
         swaggerUiConfigProperties.setUrls(urls);
+    }
+
+    @Bean
+    public CorsWebFilter corsWebFilter() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.addAllowedOriginPattern("*"); // wildcard for all origins
+        corsConfig.addAllowedMethod("*"); // allow GET, POST, PUT, DELETE, etc.
+        corsConfig.addAllowedHeader("*"); // allow all headers
+        corsConfig.setAllowCredentials(false); // set true if you need cookies/auth
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+
+        return new CorsWebFilter(source);
     }
 }

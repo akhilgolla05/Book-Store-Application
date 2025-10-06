@@ -45,13 +45,13 @@ spring:
           discovery:
             locator:
               enabled: true
-          globalcors:
-            cors-configurations:
-              '[/**]':
-                allowed-origins: "*"
-                allowed-methods: "*"
-                allowed-headers: "*"
-                allow-credentials: false
+#          globalcors:
+#            cors-configurations:
+#              '[/**]':
+#                allowed-origins: "*"
+#                allowed-methods: "*"
+#                allowed-headers: "*"
+#                allow-credentials: false
           default-filters:
             - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Methods Access-Control-Allow-Headers RETAIN_FIRST
 
