@@ -26,8 +26,6 @@ services:
     networks:
       - bookstore-net
 
-
-
   order-service:
     image: akhilgolla/bookstore-order-service
     container_name: order-service

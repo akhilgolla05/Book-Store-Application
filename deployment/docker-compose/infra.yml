@@ -95,6 +95,22 @@ services:
     networks:
       - bookstore-net
 
+#https://github.com/jinnabaalu/infinite-containers/blob/main/keycloak/dev-compose-standalone.yml
+#--import-realm
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.5
+    container_name: keycloak
+    command: ['start-dev','--import-realm']
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin1234
+    volumes:
+      - ./realm-config:/opt/keycloak/data/import
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    networks:
+      - bookstore-net
 
 networks:
   bookstore-net:
