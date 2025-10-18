@@ -28,3 +28,12 @@ $env:Path="$env:JAVA_HOME\bin;$env:Path"
 
 >task
 >task restart
+> 
+> 
+> Loki : centralized logging
+> https://loki4j.github.io/loki-logback-appender/docs/configuration
+>we can use in 2 ways : 1. configuring appender logback.xml in application 
+> 2. using a tool called promtail where we can configure to fetch all the logs
+> from the docker containers ie., pull all the logs from containers push them to LOKI server.
+>
+> 

@@ -60,6 +60,7 @@ public class OrderService {
     }
 
     private boolean canBeDelivered(OrderEntity order) {
+        logger.info("OrderNumber : {} delivery check", order.getOrderNumber());
         return DELIVERY_ALLOWED_COUNTRIES.contains(
                 order.getDeliveryAddress().country().toUpperCase());
     }

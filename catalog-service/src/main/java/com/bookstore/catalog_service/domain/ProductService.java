@@ -3,6 +3,7 @@ package com.bookstore.catalog_service.domain;
 import com.bookstore.catalog_service.ApplicationProperties;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,12 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final ApplicationProperties properties;
 
     public PagedResult<Product> getProducts(int pageNo) {
+        log.info("ProductController :: getProducts : {} ", pageNo);
         Sort sort = Sort.by(Sort.Direction.ASC, "name");
         pageNo = pageNo <= 1 ? 0 : pageNo - 1;
         Pageable pageable = PageRequest.of(pageNo, properties.pageSize(), sort);
@@ -36,6 +39,7 @@ public class ProductService {
     }
 
     public Optional<Product> getProductByCode(String code) {
+        log.info("ProductController :: getProductByCode : {} ", code);
         return productRepository.findByCode(code).map(ProductMapper::toProduct);
     }
 }
