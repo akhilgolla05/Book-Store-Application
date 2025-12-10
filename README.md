@@ -12,7 +12,7 @@ Manages the Book Store
 > Wrappers to install maven/ gradle - dont need to install and setup, they just need to run wrapper
 >> E:\Book Store Application\Book-Store-Application>mvn wrapper:wrapper
 >  ./mvnw clean package 
-> 
+> mvn wrapper:wrapper
 > mvn spotless:apply
 $env:JAVA_HOME="C:\Program Files\Java\jdk-21"
 $env:Path="$env:JAVA_HOME\bin;$env:Path" 
